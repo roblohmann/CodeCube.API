@@ -1,7 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Rob Lohmann</Authors>
+    <PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/roblohmann/CodeCube.API/blob/master/nuget-icon.png?raw=true</PackageIconUrl>
+    <RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
+    <Copyright>Copyright 2019 Rob Lohmann</Copyright>
+    <Description>Small library with helpermethods to use when communicating with APIs</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
 
 </Project>
