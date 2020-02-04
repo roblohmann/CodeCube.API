@@ -15,30 +15,25 @@ namespace CodeCube.API
         private readonly bool _useLazyMemoryCache;
 
         private readonly string _scopes;
-        private readonly string _tokenUrl;
-        private readonly string _clientSecret;
-        private readonly string _clientId;
 
         private readonly IMemoryCache _memoryCache;
+        private readonly TokenClient _tokenClient;
 
-        protected BaseApiConnection(IMemoryCache memoryCache, string clientId, string scopes, string tokenUrl, string clientSecret, int tokenCacheExpirationInMinutes = 50)
+        protected BaseApiConnection(TokenClient tokenClient, IMemoryCache memoryCache, string scopes, int tokenCacheExpirationInMinutes = 50)
         {
             _tokenCacheExpirationInMinutes = tokenCacheExpirationInMinutes;
             _scopes = scopes;
-            _tokenUrl = tokenUrl;
-            _clientSecret = clientSecret;
-            _clientId = clientId;
-
             _useLazyMemoryCache = true;
+
+            _tokenClient = tokenClient;
             _memoryCache = memoryCache;
         }
 
-        protected BaseApiConnection(string scopes, string tokenUrl, string ssoSharedSecret)
+        protected BaseApiConnection(TokenClient tokenClient, string scopes)
         {
-            _scopes = scopes;
-            _tokenUrl = tokenUrl;
-            _clientSecret = ssoSharedSecret;
+            _tokenClient = tokenClient;
 
+            _scopes = scopes;
             _useLazyMemoryCache = false;
         }
 
@@ -102,16 +97,9 @@ namespace CodeCube.API
 
         private async Task<string> RequestToken()
         {
-            var client = GetTokenClient();
-            var token = await client.RequestClientCredentialsAsync(_scopes).ConfigureAwait(false);
+            var token = await _tokenClient.RequestClientCredentialsTokenAsync(_scopes).ConfigureAwait(false);
 
             return token.AccessToken;
-        }
-
-        private TokenClient GetTokenClient()
-        {
-            var client = new TokenClient(_tokenUrl, _clientId, _clientSecret);
-            return client;
         }
     }
 }
