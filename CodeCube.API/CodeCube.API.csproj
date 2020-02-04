@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>Rob Lohmann</Authors>
     <PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
     <PackageIconUrl>https://github.com/roblohmann/CodeCube.API/blob/master/nuget-icon.png?raw=true</PackageIconUrl>
     <RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
-    <Copyright>Copyright 2019 Rob Lohmann</Copyright>
+    <Copyright>Copyright 2020 Rob Lohmann</Copyright>
     <Description>Small library with helpermethods to use when communicating with APIs</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

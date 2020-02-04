@@ -1,65 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using IdentityModel.Client;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CodeCube.API
 {
-    public abstract class BaseAPIConnection
+    public abstract class BaseApiConnection
     {
-        private readonly int TokenCacheExpirationInMinutes;
-        private readonly bool UseLazyMemoryCache;
-        private readonly string Scopes;
-        private readonly string TokenUrl;
-        private readonly string SharedScret;
+        private readonly int _tokenCacheExpirationInMinutes;
+
+        private readonly bool _useLazyMemoryCache;
+
+        private readonly string _scopes;
+        private readonly string _tokenUrl;
+        private readonly string _clientSecret;
+        private readonly string _clientId;
 
         private readonly IMemoryCache _memoryCache;
 
-        protected BaseAPIConnection(IMemoryCache memoryCache, string scopes, string tokenUrl, string ssoSharedSecret, int tokenCacheExpirationInMinutes = 50)
+        protected BaseApiConnection(IMemoryCache memoryCache, string clientId, string scopes, string tokenUrl, string clientSecret, int tokenCacheExpirationInMinutes = 50)
         {
-            TokenCacheExpirationInMinutes = tokenCacheExpirationInMinutes;
-            Scopes = scopes;
-            TokenUrl = tokenUrl;
-            SharedScret = ssoSharedSecret;
+            _tokenCacheExpirationInMinutes = tokenCacheExpirationInMinutes;
+            _scopes = scopes;
+            _tokenUrl = tokenUrl;
+            _clientSecret = clientSecret;
+            _clientId = clientId;
 
-            UseLazyMemoryCache = true;
+            _useLazyMemoryCache = true;
             _memoryCache = memoryCache;
         }
 
-        protected BaseAPIConnection(string scopes, string tokenUrl, string ssoSharedSecret, int tokenCacheExpirationInMinutes = 50)
+        protected BaseApiConnection(string scopes, string tokenUrl, string ssoSharedSecret)
         {
-            TokenCacheExpirationInMinutes = tokenCacheExpirationInMinutes;
-            Scopes = scopes;
-            TokenUrl = tokenUrl;
-            SharedScret = ssoSharedSecret;
+            _scopes = scopes;
+            _tokenUrl = tokenUrl;
+            _clientSecret = ssoSharedSecret;
 
-            UseLazyMemoryCache = false;
+            _useLazyMemoryCache = false;
         }
+
+        protected async Task SetBearerToken(HttpClient httpClient)
+        {
+            Dictionary<string, List<string>> bearerAuthorizationHeader = await GetBearerAuthorizationHeaders();
+
+            if (bearerAuthorizationHeader.TryGetValue("Authorization", out List<string> authorizationHeaders))
+            {
+                if (authorizationHeaders != null && authorizationHeaders.Count > 0)
+                {
+                    if (httpClient.DefaultRequestHeaders.Authorization == null)
+                    {
+                        httpClient.DefaultRequestHeaders.Add("Authorization", authorizationHeaders.SingleOrDefault(h => h.StartsWith("Bearer")));
+                    }
+                    else
+                    {
+                        httpClient.DefaultRequestHeaders.Remove("Authorization");
+                        httpClient.DefaultRequestHeaders.Add("Authorization", authorizationHeaders.SingleOrDefault(h => h.StartsWith("Bearer")));
+                    }
+
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException("Authorization headers could not be retrieved!");
+        }
+
+        protected abstract string GetCacheKey();
 
         /// <summary>
         /// Get a list with custom headers to connect to microservices.
         /// </summary>
         /// <returns></returns>
-        protected Dictionary<string, List<string>> GetBearerAuthorizationHeaders()
+        private async Task<Dictionary<string, List<string>>> GetBearerAuthorizationHeaders()
         {
-            return new Dictionary<string, List<string>> { { "Authorization", new List<string> { $"Bearer {GetTokenWithCaching()}" } } };
+            return new Dictionary<string, List<string>> { { "Authorization", new List<string> { $"Bearer {await GetTokenWithCaching().ConfigureAwait(false)}" } } };
         }
 
-        protected abstract string GetCacheKey();
-
-        private string GetTokenWithCaching()
+        private async Task<string> GetTokenWithCaching()
         {
             var cacheKey = GetCacheKey();
-            if (UseLazyMemoryCache && _memoryCache.TryGetValue(cacheKey, out string accessToken))
+            if (_useLazyMemoryCache && _memoryCache.TryGetValue(cacheKey, out string accessToken))
             {
                 return accessToken;
             }
 
-            accessToken = RequestToken();
+            accessToken = await RequestToken().ConfigureAwait(false);
 
-            if (!string.IsNullOrWhiteSpace(accessToken))
+            if (_useLazyMemoryCache && !string.IsNullOrWhiteSpace(accessToken))
             {
                 // Set cache options.
                 // Keep in cache for this time, reset time if accessed.
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(TokenCacheExpirationInMinutes));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(_tokenCacheExpirationInMinutes));
 
                 _memoryCache.Set(cacheKey, accessToken, cacheEntryOptions);
             }
@@ -67,16 +100,17 @@ namespace CodeCube.API
             return accessToken;
         }
 
-        private string RequestToken()
+        private async Task<string> RequestToken()
         {
             var client = GetTokenClient();
-            var token = client.RequestClientCredentialsAsync(Scopes).Result;
+            var token = await client.RequestClientCredentialsAsync(_scopes).ConfigureAwait(false);
+
             return token.AccessToken;
         }
 
-        private TokenClient GetTokenClient(string clientId)
+        private TokenClient GetTokenClient()
         {
-            var client = new TokenClient(TokenUrl, clientId, SharedScret);
+            var client = new TokenClient(_tokenUrl, _clientId, _clientSecret);
             return client;
         }
     }
