@@ -6,13 +6,15 @@
 		<PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
 		<PackageIconUrl>https://github.com/roblohmann/CodeCube.API/blob/master/nuget-icon.png?raw=true</PackageIconUrl>
 		<RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
-		<Copyright>Copyright 2020 Rob Lohmann</Copyright>
+		<Copyright>Copyright 2020 - 2024 Rob Lohmann</Copyright>
 		<Description>Small library with helpermethods to use when communicating with APIs</Description>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="IdentityModel" Version="6.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
