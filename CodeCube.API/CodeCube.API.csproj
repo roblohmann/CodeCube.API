@@ -1,21 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<Authors>Rob Lohmann</Authors>
 		<PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
 		<PackageIconUrl>https://github.com/roblohmann/CodeCube.API/blob/master/nuget-icon.png?raw=true</PackageIconUrl>
 		<RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
-		<Copyright>Copyright 2020 - 2024 Rob Lohmann</Copyright>
+		<Copyright>Copyright 2020 - 2025 Rob Lohmann</Copyright>
 		<Description>Small library with helpermethods to use when communicating with APIs</Description>
-		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="IdentityModel" Version="6.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Text.Json" Version="9.0.5" />
 	</ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace CodeCube.API
 {
@@ -13,7 +13,7 @@ namespace CodeCube.API
         /// <returns>Stringcontent object with UTF-8 encoding and application/json as mediatype.</returns>
         public static StringContent GetRequestContent(object requestObject)
         {
-            return new StringContent(JsonConvert.SerializeObject(requestObject), Encoding.UTF8, "application/json");
+            return new StringContent(JsonSerializer.Serialize(requestObject), Encoding.UTF8, "application/json");
         }
     }
 }
