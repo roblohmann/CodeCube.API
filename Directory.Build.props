@@ -7,6 +7,7 @@
     <PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
     <RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <VersionPrefix>1.2.2</VersionPrefix>
   </PropertyGroup>
 
 </Project>
