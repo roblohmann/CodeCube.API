@@ -1,17 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Nooit gepubliceerd op nuget.org; zet op true (plus PackageId/Description) zodra het package uitgebracht moet worden. -->
+    <IsPackable>false</IsPackable>
+    <Copyright>Copyright 2020 - 2026 Rob Lohmann</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="6.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
-
+    <PackageReference Include="Duende.IdentityModel" Version="8.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.14" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.14" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.14" />
   </ItemGroup>
 
 </Project>

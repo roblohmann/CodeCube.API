@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using IdentityModel.Client;
+using Duende.IdentityModel.Client;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -48,7 +48,7 @@ namespace CodeCube.API.Bearer
                 Address = url,
                 ClientId = clientId,
                 ClientSecret = clientSecret,
-                GrantType = IdentityModel.OidcConstants.GrantTypes.ClientCredentials,
+                GrantType = Duende.IdentityModel.OidcConstants.GrantTypes.ClientCredentials,
                 Parameters =
                 {
                     {"scope", scope}

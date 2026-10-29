@@ -1,17 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
-		<Authors>Rob Lohmann</Authors>
-		<PackageProjectUrl>https://github.com/roblohmann/CodeCube.API</PackageProjectUrl>
-		<PackageIconUrl>https://github.com/roblohmann/CodeCube.API/blob/master/nuget-icon.png?raw=true</PackageIconUrl>
-		<RepositoryUrl>https://github.com/roblohmann/CodeCube.API</RepositoryUrl>
-		<Copyright>Copyright 2020 - 2025 Rob Lohmann</Copyright>
+		<TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<PackageId>CodeCube.API</PackageId>
+		<Product>CodeCube.API</Product>
+		<Copyright>Copyright 2020 - 2026 Rob Lohmann</Copyright>
 		<Description>Small library with helpermethods to use when communicating with APIs</Description>
+		<PackageIcon>nuget-icon.png</PackageIcon>
+		<PackageTags>codecube api http json helpers</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.Json" Version="9.0.5" />
+		<PackageReference Include="System.Text.Json" Version="10.0.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\nuget-icon.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 </Project>
