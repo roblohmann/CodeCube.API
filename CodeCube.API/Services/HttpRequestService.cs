@@ -57,7 +57,7 @@ public class HttpRequestService : IHttpRequestService
     }
     
     private async Task<HttpResponseMessage> ExecuteRequest(HttpMethod httpMethod, 
-        object body, 
+        object? body, 
         string url, 
         CancellationToken cancellationToken)
     {

@@ -66,7 +66,8 @@ namespace CodeCube.API.Bearer
                 return token;
             }
 
-            var errorMessage = $"Unable to retrieve token for client {clientId} from provider '{url}'. Error: '{await response.HttpResponse.Content.ReadAsStringAsync()}'";
+            var responseContent = response.HttpResponse != null ? await response.HttpResponse.Content.ReadAsStringAsync() : string.Empty;
+            var errorMessage = $"Unable to retrieve token for client {clientId} from provider '{url}'. Error: '{responseContent}'";
             if (response.Exception != null)
             {
                 errorMessage = $"{errorMessage}, exception {response.Exception.GetBaseException().Message}";
